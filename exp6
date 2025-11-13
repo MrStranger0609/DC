@@ -1,30 +1,25 @@
 clc;
 clear;
 close;
-// User info
-//disp("* Name –Om Taur Roll No. - E3125 *");
+exec("C:\Program Files\scilab-2026.0.0\pskmod.sci", -1);
+exec("C:\Program Files\scilab-2026.0.0\qammod.sci", -1);
 
-// ----- M-ary Modulation -----
-N = 4;        // Number of bits per symbol
-M = 2^N;      // Modulation order (16)
+N = 4;
+M = 2^N;
+x = 0:M-1;
 
-x = 0:M-1;    // Symbol values
-
-// ----- PSK Modulation -----
-theta = (2 * %pi * x) / M;   // Phase angles
-z = exp(%i * theta);         // PSK points on unit circle
-
+// PSK Modulation
+z = pskmod(x, M);
 scf(0);
 subplot(1,2,1);
 scatter(real(z), imag(z), "fill");
 h = gca();
-h.data_bounds = [-1.5, 1.5, -1.5, 1.5];
-xtitle(' M-ary PSK', 'In-phase', 'Quadrature');
-// ----- QAM Modulation -----
-m = sqrt(M);
-a = -m + 1 : 2 : m - 1;      // Symbol positions
-[yI, yQ] = ndgrid(a, a);
-y = yI(:) + %i * yQ(:);      // Combine I and Q components
+h.data_bounds = [-1.5, 1.5,-1.5, 1.5];
+xtitle('M-ary PSK', 'In-phase', 'Quadrature');
+
+// QAM Modulation
+y = qammod(x, M);
+
 subplot(1,2,2);
 scatter(real(y), imag(y), "fill");
 h = gca();
